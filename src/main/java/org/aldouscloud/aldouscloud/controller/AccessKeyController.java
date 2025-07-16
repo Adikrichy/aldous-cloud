@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/acess-keys")
+@RequestMapping("/api/access-keys")
 public class AccessKeyController {
     private final AccessKeyService accessKeyService;
 

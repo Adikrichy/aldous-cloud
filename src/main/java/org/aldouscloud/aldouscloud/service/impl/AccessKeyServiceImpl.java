@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.security.SecureRandom;
 import java.time.LocalDateTime;
 import java.util.Base64;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -55,5 +56,17 @@ public class AccessKeyServiceImpl implements AccessKeyService {
 
     private String hashSecret(String secret){
         return passwordEncoder.encode(secret);
+    }
+    @Override
+    public Optional<AccessKey> findAccessKeyById(String accessKeyId){
+        return accessKeyRepository.findByAccessKeyId(accessKeyId);
+    }
+    @Override
+    @Transactional
+    public void updateLastUsedAt(Long accessKeyId){
+        accessKeyRepository.findById(accessKeyId).ifPresent(accessKey ->{
+            accessKey.setLastUsedAt(LocalDateTime.now());
+            accessKeyRepository.save(accessKey);
+        });
     }
 }

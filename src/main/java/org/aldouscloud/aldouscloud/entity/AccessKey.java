@@ -31,4 +31,7 @@ public class AccessKey {
     private boolean active = true;
     private LocalDateTime createdAt = LocalDateTime.now();
     private LocalDateTime lastUsedAt;
+
+    @Transient
+    private String plainSecret;
 }
