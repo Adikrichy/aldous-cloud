@@ -11,4 +11,5 @@ public interface BucketRepository extends JpaRepository<Bucket, Long> {
     Optional<Bucket> findByName(String name);
     List<Bucket> findAllByOwner(User user);
     boolean existsByName(String name);
+    Optional<Bucket> findByNameAndOwner(String name, User user);
 }

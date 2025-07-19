@@ -15,6 +15,7 @@ import org.aldouscloud.aldouscloud.mapper.RegisterMapper;
 import org.aldouscloud.aldouscloud.repository.UserRepository;
 import org.aldouscloud.aldouscloud.security.JWTService;
 import org.aldouscloud.aldouscloud.service.AuthService;
+import org.aldouscloud.aldouscloud.utils.SecurityUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -64,5 +65,12 @@ public class AuthServiceImpl implements AuthService {
         userRepository.save(user);
 
         return RegisterMapper.toDto(user);
+    }
+
+    @Override
+    public User getCurrentUser(){
+        String username = SecurityUtils.getCurrentUsername();
+        return userRepository.findByEmail(username)
+                .orElseThrow(()->new EntityNotFoundException("User not found", username));
     }
 }

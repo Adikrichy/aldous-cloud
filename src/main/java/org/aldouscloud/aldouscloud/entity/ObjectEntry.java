@@ -20,7 +20,7 @@ public class ObjectEntry {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private Bucket bucket;
 
     @Column(nullable = false)
@@ -28,6 +28,12 @@ public class ObjectEntry {
 
     @Column(nullable = false)
     private long size;
+
+    @Column(nullable = false)
+    private String originalFilename;
+
+    @Column(nullable = false)
+    private String storagePath;
 
     private String contentType;
     private String etag;

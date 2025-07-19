@@ -24,25 +24,8 @@ public class SecurityConfig {
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
     }
-
     private final JwtAuthFilter jwtAuthFilter;
 
-//    @Bean
-//    public SecurityFilterChain securityFilterChain(HttpSecurity http,
-//                                                   SignatureAuthFilter signatureAuthFilter) throws Exception {
-//        http.
-//                csrf(csrf -> csrf.disable())
-//                .authorizeHttpRequests(auth -> auth
-//                        .requestMatchers("/access-keys/**").hasRole("ROOT")
-//                        .requestMatchers(HttpMethod.POST,"/api/auth/register").permitAll()
-//                        .requestMatchers("/swagger-ui/**",
-//                                         "/v3/api-docs/**",
-//                                         "/swagger-resources/**").permitAll()
-//                        .anyRequest().authenticated())
-//                .addFilterBefore(signatureAuthFilter, UsernamePasswordAuthenticationFilter.class)
-//                .httpBasic(httpBasic -> httpBasic.disable());
-//        return http.build();
-//    }
 @Bean
 public SecurityFilterChain securityFilterChain(HttpSecurity http,
                                                SignatureAuthFilter signatureAuthFilter) throws Exception {
