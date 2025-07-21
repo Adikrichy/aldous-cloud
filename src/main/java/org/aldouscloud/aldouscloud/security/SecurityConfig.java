@@ -13,7 +13,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.aldouscloud.aldouscloud.security.JwtAuthFilter;
 
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -37,7 +36,8 @@ public SecurityFilterChain securityFilterChain(HttpSecurity http,
                     .requestMatchers("/swagger-ui/**",
                             "/v3/api-docs/**",
                             "/swagger-resources/**",
-                            "/api/auth/login").permitAll()
+                            "/api/auth/login",
+                            "/**").permitAll()
                     .anyRequest().authenticated())
             .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
             .addFilterBefore(signatureAuthFilter, JwtAuthFilter.class)

@@ -6,11 +6,15 @@ import org.aldouscloud.aldouscloud.entity.ObjectEntry;
 import org.aldouscloud.aldouscloud.entity.User;
 import org.aldouscloud.aldouscloud.service.AuthService;
 import org.aldouscloud.aldouscloud.service.ObjectEntryService;
+import org.apache.coyote.Response;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.nio.file.Files;
 
 @RestController
 @RequiredArgsConstructor
@@ -27,5 +31,16 @@ public class ObjectEntryController {
         User currentUser = authService.getCurrentUser();
         ObjectEntry entry = objectEntryService.uploadObject(file, bucketName, currentUser);
         return ResponseEntity.ok(ObjectEntryResponse.from(entry));
+    }
+
+    @GetMapping("/region/{objectKey}")
+    public ResponseEntity<Resource> getObject(
+            @PathVariable String bucketName,
+            @PathVariable String objectKey) throws IOException {
+        Resource resource = objectEntryService.loadAsResource(bucketName, objectKey);
+        String contentType = Files.probeContentType(resource.getFile().toPath());
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_TYPE,contentType != null ? contentType : "application/octet-stream")
+                .body(resource);
     }
 }

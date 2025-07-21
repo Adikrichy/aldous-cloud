@@ -18,14 +18,14 @@ public class FileSystemStorageManager implements ObjectStorageManager {
     private String storageRootPath;  // Пример: "/opt/aldouscloud/storage"
 
     @Override
-    public String save(MultipartFile file,String bucketName, String objectKey, Long userId) throws IOException{
+    public String save(MultipartFile file,String bucketName, String objectKey) throws IOException{
         // Сначала sanitize имена
         String sanitizedFileName = StringUtils.cleanPath(objectKey);
 
-        Path userBucketPath = Paths.get(storageRootPath, String.valueOf(userId), bucketName);
-        Files.createDirectories(userBucketPath); // создаёт если не существует
+        Path BucketPath = Paths.get(storageRootPath, bucketName);
+        Files.createDirectories(BucketPath); // создаёт если не существует
 
-        Path targetPath = userBucketPath.resolve(sanitizedFileName);
+        Path targetPath = BucketPath.resolve(sanitizedFileName);
         // Перезапись если существует (в будущем можно добавить версии)
         Files.copy(file.getInputStream(), targetPath, StandardCopyOption.REPLACE_EXISTING);
         return targetPath.toAbsolutePath().toString();
