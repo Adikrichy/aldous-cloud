@@ -73,4 +73,9 @@ public class ObjectEntryServiceImpl implements ObjectEntryService {
          }
          return resource;
     }
+
+    @Override
+    public String generateObjectUrl(String bucketName, String objectKey){
+        return String.format("http://localhost:8080/api/buckets/%s/objects/region/%s", bucketName, objectKey);
+    }
 }

@@ -37,7 +37,8 @@ public SecurityFilterChain securityFilterChain(HttpSecurity http,
                             "/v3/api-docs/**",
                             "/swagger-resources/**",
                             "/api/auth/login",
-                            "/**").permitAll()
+                            "/**"
+                            ).permitAll()
                     .anyRequest().authenticated())
             .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
             .addFilterBefore(signatureAuthFilter, JwtAuthFilter.class)

@@ -16,14 +16,16 @@ public class ObjectEntryResponse {
     private String path;
     private String bucketName;
     private LocalDateTime uploadedAt;
+    private String url;
 
-    public static ObjectEntryResponse from(ObjectEntry objectEntry){
+    public static ObjectEntryResponse from(ObjectEntry objectEntry, String url){
         return ObjectEntryResponse.builder()
                 .id(objectEntry.getId())
                 .objectKey(objectEntry.getObjectKey())
                 .path(objectEntry.getStoragePath())
                 .bucketName(objectEntry.getBucket().getName())
                 .uploadedAt(objectEntry.getLastModifiedAt())
+                .url(url)
                 .build();
     }
 }

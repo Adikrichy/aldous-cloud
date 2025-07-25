@@ -10,4 +10,5 @@ import java.io.IOException;
 public interface ObjectEntryService {
     ObjectEntry uploadObject(MultipartFile file, String bucketName, User user) throws IOException;
     Resource loadAsResource(String bucketName, String objectKey) throws IOException;
+    String generateObjectUrl(String bucketName, String objectKey);
 }

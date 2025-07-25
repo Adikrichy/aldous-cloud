@@ -30,7 +30,8 @@ public class ObjectEntryController {
             ) throws IOException{
         User currentUser = authService.getCurrentUser();
         ObjectEntry entry = objectEntryService.uploadObject(file, bucketName, currentUser);
-        return ResponseEntity.ok(ObjectEntryResponse.from(entry));
+        String url = objectEntryService.generateObjectUrl(bucketName,entry.getObjectKey());
+        return ResponseEntity.ok(ObjectEntryResponse.from(entry, url));
     }
 
     @GetMapping("/region/{objectKey}")
