@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -40,6 +42,10 @@ public class ObjectEntry {
 
     private LocalDateTime lastModifiedAt;
     private boolean deleted = false;
+
+    @OneToMany(mappedBy = "entry",cascade = CascadeType.ALL,orphanRemoval = true
+    ,fetch = FetchType.LAZY)
+    private List<ObjectVersion> versionId = new ArrayList<>();
 
     @PrePersist
     void onCreate(){lastModifiedAt = LocalDateTime.now();}

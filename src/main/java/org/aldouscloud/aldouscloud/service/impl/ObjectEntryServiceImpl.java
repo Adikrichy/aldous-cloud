@@ -9,6 +9,7 @@ import org.aldouscloud.aldouscloud.file.ObjectStorageManager;
 import org.aldouscloud.aldouscloud.repository.BucketRepository;
 import org.aldouscloud.aldouscloud.repository.ObjectEntryRepository;
 import org.aldouscloud.aldouscloud.service.ObjectEntryService;
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -41,10 +43,12 @@ public class ObjectEntryServiceImpl implements ObjectEntryService {
                 ));
 
 
-        if(objectEntryRepository.existsByBucketAndObjectKey(bucket,originalFilename)){
-            throw new IllegalArgumentException("Object with name '" + originalFilename + "' already exists in this bucket");
-        }
-        String objectKey = originalFilename;
+//        if(objectEntryRepository.existsByBucketAndObjectKey(bucket,originalFilename)){
+//            throw new IllegalArgumentException("Object with name '" + originalFilename + "' already exists in this bucket");
+//        }
+        String ext = FilenameUtils.getBaseName(originalFilename); //image
+        String extension = FilenameUtils.getExtension(originalFilename); //png jpg
+        String objectKey = ext + "-" + UUID.randomUUID() + "." + extension;
         String absolutePath = objectStorageManager.save(file,bucketName,objectKey);
 
         ObjectEntry objectEntry = new ObjectEntry();

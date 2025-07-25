@@ -6,6 +6,7 @@ import org.aldouscloud.aldouscloud.entity.ObjectEntry;
 import org.aldouscloud.aldouscloud.entity.User;
 import org.aldouscloud.aldouscloud.service.AuthService;
 import org.aldouscloud.aldouscloud.service.ObjectEntryService;
+import org.aldouscloud.aldouscloud.service.ObjectVersionService;
 import org.apache.coyote.Response;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -22,6 +23,7 @@ import java.nio.file.Files;
 public class ObjectEntryController {
     private final ObjectEntryService objectEntryService;
     private final AuthService authService;
+    private final ObjectVersionService objectVersionService;
 
     @PostMapping(value = "/upload", consumes = "multipart/form-data")
     public ResponseEntity<ObjectEntryResponse> uploadObject(
@@ -30,6 +32,7 @@ public class ObjectEntryController {
             ) throws IOException{
         User currentUser = authService.getCurrentUser();
         ObjectEntry entry = objectEntryService.uploadObject(file, bucketName, currentUser);
+        objectVersionService.saveVersion(entry);
         String url = objectEntryService.generateObjectUrl(bucketName,entry.getObjectKey());
         return ResponseEntity.ok(ObjectEntryResponse.from(entry, url));
     }
